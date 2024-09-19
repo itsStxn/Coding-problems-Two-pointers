@@ -5,16 +5,18 @@ public class Solution {
 		Array.Sort(nums);
 		
 		IList<IList<int>> result = [];
-		HashSet<string> seen = [];
+		if (nums[0] > 0 || nums[^1] < 0) return result;
 		
 		for (int i = 0; i < nums.Length - 2; i++) {
-			if (i > 0 && nums[i] == nums[i - 1]) continue;
-			TwoSum(nums, i, seen, result);
+			if (nums[i] > 0) return result;
+			if (i == 0 && nums[i] != nums[i - 1]) {
+				TwoSum(nums, i, result);
+			}
 		}
 
 		return result;
 	}
-	public void TwoSum(int[] nums, int targetIndex, HashSet<string> seen, IList<IList<int>> result) {
+	private void TwoSum(int[] nums, int targetIndex, IList<IList<int>> result) {
 		int target = -nums[targetIndex],
 		right = nums.Length - 1,
 		left = targetIndex + 1;
@@ -22,16 +24,16 @@ public class Solution {
 		while (left < right) {
 			int sum = nums[left] + nums[right];
 
-			if (target > sum)
+			if (target > sum) 
 				left++;
-			else if (target < sum)
+			else if (target < sum) 
 				right--;
 			else {
-				List<int> triplet = [nums[targetIndex], nums[left++], nums[right--]];
-				if (seen.Add(string.Join(",", triplet))) {
-					result.Add(triplet);
-				}
-
+				result.Add([
+					nums[targetIndex],
+					nums[left++],
+					nums[right--]
+				]);
 				while (left < right && nums[left] == nums[left - 1]) left++;
 				while (left < right && nums[right] == nums[right + 1]) right--;
 			}
