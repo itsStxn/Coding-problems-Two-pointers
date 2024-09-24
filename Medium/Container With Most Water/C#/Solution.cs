@@ -2,21 +2,18 @@ namespace Container_With_Most_Water;
 
 public class Solution {
 	public int MaxArea(int[] height) {
-		int n = height.Length - 1,
-		right = n, 
+		int n = height.Length,
+		right = n - 1, 
 		left = 0;
 
-		for (int r = 0, l = n; r <= n; r++, l--) {
-			int h = height[r],
-			areaRight = right * height[right],
+		for (int W = 0; W < n; W++) {
+			int areaRight = right * height[right],
 			areaLeft = (n - left) * height[left];
 
-			left = l * h > areaLeft ? r : left;
-			right = r * h >= areaRight ? r : right;
-		}
-
+			left = GetArea(height, W, right) > areaLeft ? W : left;
+			right = GetArea(height, left, W) >= areaRight ? W : right;
 		Console.WriteLine($"{left}, {right}");
-		Console.WriteLine($"{Math.Min(height[left], height[right])}");
+		}
 
 		return GetArea(height, left, right);
 	}
